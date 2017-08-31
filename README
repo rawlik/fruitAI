@@ -1,0 +1,35 @@
+OPIS:
+Program jest projektem zaliczeniowym z przedmiotu Algorytmy i Struktury Danych II w I semestrze roku akademickiego 2010/2011. Zasadniczą częścią jest sztuczna inteligencja w grze polegającej na zbieraniu bonusów na planszy.
+Autorem jest Michał Rawlik, II rok SMP.
+
+
+
+KOMPILACJA:
+Program swoją komunikację z użytkownikiem całkowicie opiera na bibliotece ncurses: http://www.gnu.org/software/ncurses/ncurses.html . W systemach opartych na debianie można ją znaleść w pakiecie 'libncurses5'.
+Projekt należy kompilować poprzez:
+> make
+
+
+
+URUCHAMIANIE:
+W terminalu obsługiwanym przez ncurses należy wpisać:
+
+> ./game
+Uruchamia grę na planszy wielkości aktualnego terminala.
+
+> ./game WIDTH HEIGHT
+Uruchamia grę na planszy o zadanych rozmiarach.
+
+Uruchomienie z dowolnymi innymi parametrami powoduje wyświetlenie ekranu pomocy.
+
+Wszystkie klawisze potrzebne do gry wyjaśnione są po uruchomieniu na górze ekranu.
+
+
+
+
+ZASTOSOWANE ALGORYTMY:
+Sztuczna inteligencja komputera działa dwuetapowo. Pierwsze jest obliczenie optymalnych ścieżek pomiędzy wszystkimi punktami planszy (jest to wykonywane tylko raz). Poza tym przy każdym ruchu komputer planuje optymalny ruch.
+
+Do obliczenia ścieżek wykorzystywany jest graf w którym wierzchołkami są wszystkie pola planszy (te na których nie ma ścian), przy czym wszystkie sąsiadujące połączone są krawędzią. Ścieżki znajdowane są przy pomocy algorytmu Floyda. Czas tej operacji bardzo szybko rośnie z rozmiarami planszy (jak n^3, gdzie n to pole planszy) i gdy liczba pól osiągnie 2000 jest już rzędu pół minuty.
+
+Gdy komputer ma zaplanować ruch tworzony jest graf, którego wierzchołkami są wszystkie bonusy których długość najkrótszej ścieżki (lub po prostu odległość) od komputera jest mniejsza niż od gracza. Komputer nigdy nie próbuje iść do bonusa, który gracz mógłby zebrać przed nim. W grafie tym wszystkie wierzchołki połączone są krawędziami z wagami równymi ich odległości. Następnie komputer przy pomocy zmodyfikowanego algorytmu DFS znajduje ścieżkę o maksymalnym stosunku sumy punktów na bonusach do pokonanej odległości przy jednoczesnym warunku, że do żadnego wierzchołka ścieżki gracz nie ma możliwości dotarcie przez komputerem.
